@@ -1,21 +1,27 @@
-import fs from "fs/promises";
-import path from "path";
+// import { getData } from "../fetchData";
+import Link from "next/link";
 
 function HomePage({ data: { products } }) {
   return (
     <ul>
       {products.map((rep) => (
-        <li key={rep.id}>{rep.description}</li>
+        <li key={rep.id}>
+          <Link href={`/${rep.id}`}>{rep.brand}</Link>
+        </li>
       ))}
     </ul>
   );
 }
 
 export async function getStaticProps() {
-  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
-  const jsonData = await fs.readFile(filePath);
-  const data = JSON.parse(jsonData);
-  return { props: { data } };
+  const response = await fetch("https://dummyjson.com/products");
+  const data = await response.json();
+
+  if (data?.products.length === 0) {
+    return { notFound: true };
+  }
+
+  return { props: { data }, revalidate: 10 };
 }
 
 export default HomePage;
