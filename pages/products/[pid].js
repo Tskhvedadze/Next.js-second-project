@@ -1,6 +1,6 @@
 // import { getData } from "../fetchData";
 
-export default function ProductDetail({ products }) {
+function Product({ products }) {
   return (
     <>
       <h1>{products.title} </h1>
@@ -11,7 +11,7 @@ export default function ProductDetail({ products }) {
   );
 }
 
-export async function getStaticProps(conext) {
+export async function getServerSideProps(conext) {
   const { params } = conext;
   const productId = params.pid;
 
@@ -33,7 +33,7 @@ export async function getStaticProps(conext) {
   };
 }
 
-export async function getStaticPaths() {
+export async function getServerSidePaths() {
   const response = await fetch("https://dummyjson.com/products");
   const data = await response.json();
 
@@ -44,3 +44,5 @@ export async function getStaticPaths() {
     fallback: true,
   };
 }
+
+export default Product;

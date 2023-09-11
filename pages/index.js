@@ -1,15 +1,26 @@
 // import { getData } from "../fetchData";
 import Link from "next/link";
 
-function HomePage({ data: { products } }) {
+function HomePage({ data }) {
   return (
-    <ul>
-      {products.map((rep) => (
-        <li key={rep.id}>
-          <Link href={`/${rep.id}`}>{rep.brand}</Link>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul>
+        {data &&
+          data?.products.map((product) => (
+            <li key={product.id}>
+              <Link href={`/products/${product.id}`}>{product.brand}</Link>
+            </li>
+          ))}
+      </ul>
+      <Link
+        href={{
+          pathname: "lastSales",
+          query: {},
+        }}
+      >
+        Go To The Last Sales Page
+      </Link>
+    </>
   );
 }
 
